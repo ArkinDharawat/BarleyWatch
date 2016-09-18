@@ -29,16 +29,14 @@ def closeness(image,w,h):
 #    print Greens,Yellows
     return Greens,Yellows
 
-def compare(filePath):
-    #the file that we want to compare
-
+def values():
     compareFile = os.path.join(skimage.data_dir, "/Users/arkin/BarleyWatch/cropimages/Testcases/Compare.jpg")
     pic = novice.open("/Users/arkin/BarleyWatch/cropimages/Testcases/Compare.jpg")
     stopWaterImage = io.imread(compareFile)[(pic.size[1]/2)-250:(pic.size[1]/2)+250,(pic.size[0]/2)-250:(pic.size[0]/2)+250]
 
-    print "Stop the Water",
+    #print "Stop the Water",
     gC,yC = closeness(stopWaterImage,stopWaterImage.shape[1],stopWaterImage.shape[0])
-    print float(gC)/yC
+
 
     #print readGreen(stopWaterImage,stopWaterImage.shape[1],stopWaterImage.shape[0])
 
@@ -47,10 +45,10 @@ def compare(filePath):
     pic = novice.open("/Users/arkin/BarleyWatch/cropimages/Testcases/Ripe.jpg")
     ripeImage = io.imread(ripeFile)[(pic.size[1]/2)-250:(pic.size[1]/2)+250,(pic.size[0]/2)-250:(pic.size[0]/2)+250]
 
-    print "Ripe Vareity",
+    #print "Ripe Vareity",
     gR,yR = closeness(ripeImage,ripeImage.shape[1],ripeImage.shape[0])
 
-    print float(gR)/yR
+
     #print readGreen(ripeImage,ripeImage.shape[1],ripeImage.shape[0])
 
     #The file that is unripe
@@ -58,11 +56,28 @@ def compare(filePath):
     pic = novice.open("/Users/arkin/BarleyWatch/cropimages/Testcases/Early.jpg")
     earlyImage = io.imread(earlyFile)[(pic.size[1]/2)-250:(pic.size[1]/2)+250,(pic.size[0]/2)-250:(pic.size[0]/2)+250]
 
-    print "Unripe Variey",
+    #print "Unripe Variey",
     gU,yU = closeness(earlyImage,earlyImage.shape[1],earlyImage.shape[0])
-    print float(gU)/yU
 
+    return gC,yC,gR,yR,gU,yU
 
+def outcome(grVal,yeVal,gC,yC,gR,yR,gU,yU):
+    R = float(grVal)/(grVal+yeVal)
+
+    cRatio = float(gC)/(gC+yC)
+    rRatio = float (gR)/(gR+yR)
+    uRatio = float (gU)/(gU+yU)
+
+    if R == rRatio or (rRatio-R) <= 0.05:
+        print "Ripe"
+    elif R == cRatio or (cRatio-r)<=0.05:
+        print "Stop Irrigation"
+    else:
+        print "Unripe"
+
+def compare(filePath):
+    #the file that we want to compare
+    gC,yC,gR,yR,gU,yU = values()
 
     files = os.listdir(filePath)
     for imgFileName in files:
@@ -74,7 +89,7 @@ def compare(filePath):
             y = pic.size[0]
             fileAsArray = io.imread(imageFile)[(x/2)-250:(x/2)+250,(y/2)-250:(y/2)+250]
             g,ye = closeness(fileAsArray,fileAsArray.shape[1],fileAsArray.shape[0])
-            print float(g)/ye
+            outcome(g,ye,gC,yC,gR,yR,gU,yU)
 
 
 
