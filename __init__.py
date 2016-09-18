@@ -1,5 +1,5 @@
 import test_windwo,sys
-import display_information_window
+import display_information_window,imagescraper
 import time
 
 button_hit = False
@@ -17,5 +17,6 @@ while (button_hit and (city=="" or date=="")):
 if not button_hit: #if button_hit = false then exit normally
     sys.exit(0)
 
-
-display_information_window.weather_plot(city)
+#display_information_window.weather_plot(city)
+imagescraper.downloadImage("http://172.16.167.156/sample.jpg")
+display_information_window.main()

@@ -12,7 +12,7 @@ class starter_window:
         self.screen_height = self.master.winfo_screenheight()
         self.master.geometry('%dx%d+%d+%d' % (self.screen_width,self.screen_height, 0, 0))
 
-        self.master.wm_title("Start Window rate")
+        self.master.wm_title("Login Window")
 
         #Quit and Go buttons
         self.Quit=Button(self.frame,text="Quit",command=self.close_windows)
@@ -31,7 +31,7 @@ class starter_window:
 
 
         #Baudrate selection
-        self.L2=Label(self.frame,text="Enter Date(yyyy/mm/dd)")
+        self.L2=Label(self.frame,text="Enter Password")
         self.L2.grid(row=1,column=0)
 
         #self.V2=StringVar(self.frame)

@@ -67,32 +67,21 @@ def outcome(grVal,yeVal,gC,yC,gR,yR,gU,yU):
     cRatio = float(gC)/(gC+yC)
     rRatio = float (gR)/(gR+yR)
     uRatio = float (gU)/(gU+yU)
-
     if R == rRatio or (rRatio-R) <= 0.05:
-        print "Ripe"
+        return "Ripe"
     elif R == cRatio or (cRatio-r)<=0.05:
-        print "Stop Irrigation"
+        return "Stop Irrigation"
     else:
-        print "Unripe"
+        return "Unripe"
 
-def compare(filePath):
+def compare(imgFileName):
     #the file that we want to compare
     gC,yC,gR,yR,gU,yU = values()
-
-    files = os.listdir(filePath)
-    for imgFileName in files:
-        if imgFileName[-4:] == ".jpg":
-            imageFile = os.path.join(skimage.data_dir, "/Users/arkin/BarleyWatch/cropimages/"+imgFileName)
-            pic = novice.open("/Users/arkin/BarleyWatch/cropimages/"+imgFileName)
-            print imgFileName
-            x = pic.size[1]
-            y = pic.size[0]
-            fileAsArray = io.imread(imageFile)[(x/2)-250:(x/2)+250,(y/2)-250:(y/2)+250]
-            g,ye = closeness(fileAsArray,fileAsArray.shape[1],fileAsArray.shape[0])
-            outcome(g,ye,gC,yC,gR,yR,gU,yU)
-
-
-
-
-
-compare("/Users/arkin/BarleyWatch/cropimages")
+    imageFile = os.path.join(skimage.data_dir, "/Users/arkin/BarleyWatch/cropimages/"+imgFileName)
+    pic = novice.open("/Users/arkin/BarleyWatch/cropimages/"+imgFileName)
+    #print imgFileName
+    x = pic.size[1]
+    y = pic.size[0]
+    fileAsArray = io.imread(imageFile)[(x/2)-250:(x/2)+250,(y/2)-250:(y/2)+250]
+    g,ye = closeness(fileAsArray,fileAsArray.shape[1],fileAsArray.shape[0])
+    return outcome(g,ye,gC,yC,gR,yR,gU,yU)
