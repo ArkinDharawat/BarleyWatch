@@ -4,8 +4,11 @@ from skimage.feature import blob_dog, blob_log, blob_doh
 from skimage.color import rgb2gray
 from math import sqrt
 
+import os
+print os.getcwd()
+
 import matplotlib.pyplot as plt
-filepath = '/Users/adityabhargava/Documents/BarleyWatch/image.jpg'
+filepath = '/Users/adityabhargava/Documents/BarleyWatch/image.jpg
 filename = os.path.join(skimage.data_dir, filepath)
 from skimage import io
 image = io.imread(filename)[0:500, 0:500]
@@ -41,4 +44,4 @@ for idx, (blobs, color, title) in enumerate(sequence):
     ax[idx].set_axis_off()
 
 plt.tight_layout()
-plt.show()
+plt.show()"""

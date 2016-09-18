@@ -1,64 +1,83 @@
 import skimage
 import os
 from skimage import io
+from skimage import novice
 import math
+
+
+def closeness(image,w,h):
+    Black = (0,0)
+    Red = (225,0)
+    Green = (0,225)
+    Yellow = (225,225)
+
+    Greens = 0
+    Yellows = 0
+
+    i=0
+    while i<(w):
+        j =0
+        while j<(h):
+            R = image[i,j][0]
+            G = image[i,j][1]
+            if G >= 112.5 and R < 112.5:
+                Greens+=1
+            if G >=112.5 and R>=112.5:
+                Yellows+=1
+            j+=1
+        i+=1
+#    print Greens,Yellows
+    return Greens,Yellows
 
 def compare(filePath):
     #the file that we want to compare
-    compareFile = os.path.join(skimage.data_dir, filePath)
-    image = io.imread(compareFile)[0:500, 0:500]
+
+    compareFile = os.path.join(skimage.data_dir, "/Users/arkin/BarleyWatch/cropimages/Testcases/Compare.jpg")
+    pic = novice.open("/Users/arkin/BarleyWatch/cropimages/Testcases/Compare.jpg")
+    stopWaterImage = io.imread(compareFile)[(pic.size[1]/2)-250:(pic.size[1]/2)+250,(pic.size[0]/2)-250:(pic.size[0]/2)+250]
+
+    print "Stop the Water",
+    gC,yC = closeness(stopWaterImage,stopWaterImage.shape[1],stopWaterImage.shape[0])
+    print float(gC)/yC
+
+    #print readGreen(stopWaterImage,stopWaterImage.shape[1],stopWaterImage.shape[0])
+
     #The file thats perfect
-    ripeFile = os.path.join(skimage.data_dir, "/Users/adityabhargava/Documents/BarleyWatch/ripe.jpg")
-    ripeImage = io.imread(ripeFile)[0:500, 0:500]
+    ripeFile = os.path.join(skimage.data_dir, "/Users/arkin/BarleyWatch/cropimages/Testcases/Ripe.jpg")
+    pic = novice.open("/Users/arkin/BarleyWatch/cropimages/Testcases/Ripe.jpg")
+    ripeImage = io.imread(ripeFile)[(pic.size[1]/2)-250:(pic.size[1]/2)+250,(pic.size[0]/2)-250:(pic.size[0]/2)+250]
+
+    print "Ripe Vareity",
+    gR,yR = closeness(ripeImage,ripeImage.shape[1],ripeImage.shape[0])
+
+    print float(gR)/yR
+    #print readGreen(ripeImage,ripeImage.shape[1],ripeImage.shape[0])
+
     #The file that is unripe
-    earlyFile = os.path.join(skimage.data_dir, "/Users/adityabhargava/Documents/BarleyWatch/early.jpg")
-    earlyImage = io.imread(earlyFile)[0:500, 0:500]
-    #The file is over ripe
-    #lateFile = os.path.join(skimage.data_dir, "")
-    #lateImage = io.imread(lateFile)[0:500, 0:500]
-    diff = (0,0,0)
-    i = 0
-    while i<500:
-    	j =0
-    	while j<500:
-    		diff += abs(image[i,j] - ripeImage[i,j])
-    		j= j+1
-    	i=i+1	
+    earlyFile = os.path.join(skimage.data_dir, "/Users/arkin/BarleyWatch/cropimages/Testcases/Early.jpg")
+    pic = novice.open("/Users/arkin/BarleyWatch/cropimages/Testcases/Early.jpg")
+    earlyImage = io.imread(earlyFile)[(pic.size[1]/2)-250:(pic.size[1]/2)+250,(pic.size[0]/2)-250:(pic.size[0]/2)+250]
 
-    r1 = diff[0]/(500*500)
-    g1 = diff[1]/(500*500)
-    b1 = diff[2]/(500*500)
-    d1 = math.sqrt(r1*r1 + g1*g1 + b1*b1)
-    print r1
-    print g1
-    print b1
-
-    diff = (0,0,0)
-    i = 0
-    while i<500:
-    	j =0
-    	while j<500:
-    		diff += abs(image[i,j] - earlyImage[i,j])
-    		j= j+1
-    	i=i+1	
-
-    r2 = diff[0]/(500*500)
-    g2 = diff[1]/(500*500)
-    b2 = diff[2]/(500*500)
-    d2 = math.sqrt(r2*r2 + g2*g2 + b2*b2)
-    print r2
-    print g2
-    print b2
+    print "Unripe Variey",
+    gU,yU = closeness(earlyImage,earlyImage.shape[1],earlyImage.shape[0])
+    print float(gU)/yU
 
 
-    if(d1<d2):
-    	print "close to ripe"
-    elif(d1>d2):
-    	print "close to early"
-    else:
-    	print "the fuck they the same"
 
-    print d1
-    print d2	
+    files = os.listdir(filePath)
+    for imgFileName in files:
+        if imgFileName[-4:] == ".jpg":
+            imageFile = os.path.join(skimage.data_dir, "/Users/arkin/BarleyWatch/cropimages/"+imgFileName)
+            pic = novice.open("/Users/arkin/BarleyWatch/cropimages/"+imgFileName)
+            print imgFileName
+            x = pic.size[1]
+            y = pic.size[0]
+            fileAsArray = io.imread(imageFile)[(x/2)-250:(x/2)+250,(y/2)-250:(y/2)+250]
+            g,ye = closeness(fileAsArray,fileAsArray.shape[1],fileAsArray.shape[0])
+            print float(g)/ye
 
-compare("/Users/adityabhargava/Documents/Github/BarleyWatch/sample.jpg")
+
+
+
+
+compare("/Users/arkin/BarleyWatch/cropimages")
