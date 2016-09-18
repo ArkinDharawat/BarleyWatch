@@ -10,7 +10,7 @@ class starter_window:
         self.frame = Frame(self.master)
         self.screen_width = self.master.winfo_screenwidth()
         self.screen_height = self.master.winfo_screenheight()
-        self.master.geometry('%dx%d+%d+%d' % (self.screen_width,self.screen_height, 0, 0))
+        self.master.geometry('%dx%d+%d+%d' % (500,400, self.screen_width/2, self.screen_height/2))
 
         self.master.wm_title("Login Window")
 
